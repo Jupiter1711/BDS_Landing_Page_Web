@@ -124,7 +124,7 @@ const Home = () => {
                 <h3 className="font-semibold text-gray-900 line-clamp-1 flex-1">
                   {property.title}
                 </h3>
-                <div className="flex items-center space-x-1 flex-shrink-0 ml-2">
+                <div className="flex items-center space-x-1 shrink-0 ml-2">
                   <svg 
                     className="w-3 h-3 text-black" 
                     fill="currentColor" 
