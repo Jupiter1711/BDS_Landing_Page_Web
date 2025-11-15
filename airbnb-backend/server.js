@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Property = require('./models/Property');
 const authRoutes = require('./routes/auth');
+const propertyRoutes = require('./routes/properties');
 
 // Load biến môi trường
 require('dotenv').config();
@@ -28,6 +29,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
+app.use('/api/properties', propertyRoutes);
 
 // Biến để theo dõi trạng thái kết nối
 let dbConnected = false;
