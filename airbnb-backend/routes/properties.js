@@ -77,6 +77,73 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Tìm kiếm và lọc properties
+router.get('/search', async (req, res) => {
+  try {
+    const {
+      location,
+      checkIn,
+      checkOut,
+      guests,
+      minPrice,
+      maxPrice,
+      propertyType,
+      amenities,
+      page = 1,
+      limit = 12
+    } = req.query;
+
+    let query = {};
+
+    // Tìm kiếm theo location
+    if (location) {
+      query['location.city'] = { $regex: location, $options: 'i' };
+    }
+
+    // Lọc theo giá
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = parseInt(minPrice);
+      if (maxPrice) query.price.$lte = parseInt(maxPrice);
+    }
+
+    // Lọc theo loại property
+    if (propertyType) {
+      query.type = propertyType;
+    }
+
+    // Lọc theo số khách
+    if (guests) {
+      query.maxGuests = { $gte: parseInt(guests) };
+    }
+
+    // Lọc theo tiện nghi
+    if (amenities) {
+      const amenitiesArray = amenities.split(',');
+      query.amenities = { $in: amenitiesArray };
+    }
+
+    const skip = (page - 1) * limit;
+
+    const properties = await Property.find(query)
+      .skip(skip)
+      .limit(parseInt(limit))
+      .sort({ createdAt: -1 });
+
+    const total = await Property.countDocuments(query);
+
+    res.json({
+      properties,
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / limit)
+    });
+  } catch (error) {
+    console.error('Lỗi khi tìm kiếm properties:', error);
+    res.status(500).json({ error: 'Lỗi server khi tìm kiếm' });
+  }
+});
+
 // Mock data function
 function getMockProperties() {
   return [
