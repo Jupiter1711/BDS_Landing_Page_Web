@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Header = () => {
   const { user, logout } = useAuth();
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleLogout = () => {
     logout();
+    setShowDropdown(false);
   };
 
   return (
     <header className="border-b border-gray-200 sticky top-0 bg-white z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-            {/* Logo bên trái */}
+          {/* Logo bên trái */}
           <Link to="/" className="flex items-center space-x-2">
             <img 
               src="/logo.png" 
@@ -50,45 +52,88 @@ const Header = () => {
             
             {user ? (
               <div className="flex items-center space-x-2">
-                <div className="flex items-center border border-gray-300 rounded-full p-2 hover:shadow-md cursor-pointer">
-                  <svg className="w-5 h-5 text-gray-500 mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                  <div className="bg-gray-500 rounded-full p-1 ml-1">
-                    <img 
-                      className="w-4 h-4 rounded-full object-cover" 
-                      src={user.avatar} 
-                      alt={user.name}
-                    />
-                  </div>
+                {/* Dropdown Menu */}
+                <div className="relative">
+                  <button 
+                    className="flex items-center space-x-2 border border-gray-300 rounded-full p-2 hover:shadow-md transition-shadow"
+                    onClick={() => setShowDropdown(!showDropdown)}
+                  >
+                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <div className="bg-gray-500 rounded-full p-1">
+                      <img 
+                        className="w-6 h-6 rounded-full object-cover" 
+                        src={user.avatar || "/default-avatar.png"} 
+                        alt={user.name}
+                        onError={(e) => {
+                          e.target.src = "/default-avatar.png";
+                        }}
+                      />
+                    </div>
+                  </button>
+
+                  {/* Dropdown Content */}
+                  {showDropdown && (
+                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <p className="font-semibold text-gray-900">{user.name}</p>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+                      
+                      <Link 
+                        to="/my-bookings" 
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        onClick={() => setShowDropdown(false)}
+                      >
+                        🏠 Đặt phòng của tôi
+                      </Link>
+                      
+                      <Link 
+                        to="/profile" 
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        onClick={() => setShowDropdown(false)}
+                      >
+                        👤 Hồ sơ
+                      </Link>
+                      
+                      <button 
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-t border-gray-100 mt-2"
+                      >
+                        🚪 Đăng xuất
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <button 
-                  onClick={handleLogout}
-                  className="text-sm font-medium hover:bg-gray-100 px-4 py-2 rounded-full"
-                >
-                  Đăng xuất
-                </button>
               </div>
             ) : (
               <div className="flex items-center space-x-2">
                 <Link 
                   to="/login"
-                  className="text-sm font-medium hover:bg-gray-100 px-4 py-2 rounded-full"
+                  className="text-sm font-medium hover:bg-gray-100 px-4 py-2 rounded-full transition-colors"
                 >
                   Đăng nhập
                 </Link>
                 <Link 
                   to="/register"
-                  className="text-sm font-medium hover:bg-gray-100 px-4 py-2 rounded-full"
+                  className="text-sm font-medium hover:bg-gray-100 px-4 py-2 rounded-full transition-colors"
                 >
                   Đăng ký
                 </Link>
               </div>
             )}
           </div>
-
         </div>
       </div>
+
+      {/* Click outside to close dropdown */}
+      {showDropdown && (
+        <div 
+          className="fixed inset-0 z-40" 
+          onClick={() => setShowDropdown(false)}
+        />
+      )}
     </header>
   );
 };

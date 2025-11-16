@@ -7,6 +7,7 @@ import PropertyDetail from './pages/PropertyDetail';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import './index.css';
+import MyBookings from './pages/MyBookings';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               <Route path="/property/:id" element={<PropertyDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/my-bookings" element={<MyBookings />} />
             </Routes>
           </main>
         </div>
