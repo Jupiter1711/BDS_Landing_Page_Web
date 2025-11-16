@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
+import ReviewSection from '../components/ReviewSection';
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -474,6 +475,9 @@ const PropertyDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Review Section - THÊM PHẦN NÀY */}
+      <ReviewSection propertyId={id} property={property} />
     </div>
   );
 };

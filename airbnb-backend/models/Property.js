@@ -79,6 +79,14 @@ const propertySchema = new mongoose.Schema({
   isAvailable: {
     type: Boolean,
     default: true
+  }, 
+  reviewScores: {
+    cleanliness: { type: Number, default: 0 },
+    accuracy: { type: Number, default: 0 },
+    communication: { type: Number, default: 0 },
+    location: { type: Number, default: 0 },
+    checkIn: { type: Number, default: 0 },
+    value: { type: Number, default: 0 }
   }
 }, {
   timestamps: true
