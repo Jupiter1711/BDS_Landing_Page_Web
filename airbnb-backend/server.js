@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const propertyRoutes = require('./routes/properties');
 const bookingRoutes = require('./routes/bookings');
 const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
 
 // Load biến môi trường
 require('dotenv').config();
@@ -31,6 +32,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/properties', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/reviews', reviewRoutes);

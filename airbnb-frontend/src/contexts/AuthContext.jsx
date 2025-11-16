@@ -94,11 +94,20 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  // THÊM HÀM UPDATE USER - Bước 2
+  const updateUser = (userData) => {
+    setUser(prevUser => ({
+      ...prevUser,
+      ...userData
+    }));
+  };
+
   const value = {
     user,
     login,
     register,
     logout,
+    updateUser, // THÊM VÀO VALUE
     loading
   };
 

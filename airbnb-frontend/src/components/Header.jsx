@@ -16,26 +16,26 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo bên trái */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2 shrink-0">
             <img 
               src="/logo.png" 
               alt="DudesChaseMoney" 
-              className="h-24 w-auto"
+              className="h-28 w-auto" // Giảm kích thước logo để cân đối
             />
           </Link>
 
-          {/* Search Bar */}
-          <div className="flex-1 max-w-2xl mx-8">
-            <div className="flex items-center border border-gray-300 rounded-full px-4 py-2 shadow-sm hover:shadow-md transition-shadow">
-              <button className="text-sm font-semibold px-4 border-r border-gray-300">
-                Nơi nào đó
+          {/* Search Bar - ĐÃ SỬA */}
+          <div className="flex-1 max-w-lg mx-4"> {/* Giảm max-w-2xl xuống max-w-lg và mx-8 xuống mx-4 */}
+            <div className="flex items-center border border-gray-300 rounded-full px-3 py-2 shadow-sm hover:shadow-md transition-shadow">
+              <button className="text-sm font-semibold px-3 border-r border-gray-300 flex-1 text-center truncate">
+                Địa Điểm Bất Kì
               </button>
-              <button className="text-sm text-gray-500 px-4 border-r border-gray-300">
-                Tuần bất kỳ
+              <button className="text-sm text-gray-500 px-3 border-r border-gray-300 flex-1 text-center truncate">
+                Giá Bán
               </button>
-              <button className="text-sm text-gray-500 px-4 flex items-center">
-                Thêm khách
-                <div className="ml-2 bg-rose-500 rounded-full p-2">
+              <button className="text-sm text-gray-500 px-3 flex items-center justify-center flex-1">
+                <span className="truncate">Thêm khách</span>
+                <div className="ml-2 bg-rose-500 rounded-full p-1 shrink-0">
                   <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
@@ -45,8 +45,8 @@ const Header = () => {
           </div>
 
           {/* User Menu */}
-          <div className="flex items-center space-x-4">
-            <button className="text-sm font-medium hover:bg-gray-100 px-4 py-2 rounded-full">
+          <div className="flex items-center space-x-4 shrink-0">
+            <button className="text-sm font-medium hover:bg-gray-100 px-3 py-2 rounded-full whitespace-nowrap">
               Trở thành chủ nhà
             </button>
             
@@ -111,13 +111,13 @@ const Header = () => {
               <div className="flex items-center space-x-2">
                 <Link 
                   to="/login"
-                  className="text-sm font-medium hover:bg-gray-100 px-4 py-2 rounded-full transition-colors"
+                  className="text-sm font-medium hover:bg-gray-100 px-3 py-2 rounded-full transition-colors whitespace-nowrap"
                 >
                   Đăng nhập
                 </Link>
                 <Link 
                   to="/register"
-                  className="text-sm font-medium hover:bg-gray-100 px-4 py-2 rounded-full transition-colors"
+                  className="text-sm font-medium hover:bg-gray-100 px-3 py-2 rounded-full transition-colors whitespace-nowrap"
                 >
                   Đăng ký
                 </Link>
