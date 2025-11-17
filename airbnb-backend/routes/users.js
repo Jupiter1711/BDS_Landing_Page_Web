@@ -9,6 +9,7 @@ const User = require('../models/User');
 router.put('/profile', auth, async (req, res) => {
   try {
     const { name, email, phone, address, avatar } = req.body;
+    console.log('Received profile update data:', req.body); // Thêm log để debug
 
     // Kiểm tra xem email đã tồn tại chưa (nếu thay đổi email)
     if (email && email !== req.user.email) {
@@ -30,12 +31,14 @@ router.put('/profile', auth, async (req, res) => {
       { new: true, runValidators: true }
     ).select('-password');
 
+    console.log('Updated user:', updatedUser); // Thêm log
+
     res.json({
       message: 'Cập nhật thông tin thành công',
       user: updatedUser
     });
   } catch (error) {
-    console.error(error);
+    console.error('Profile update error:', error);
     
     if (error.name === 'ValidationError') {
       const messages = Object.values(error.errors).map(err => err.message);

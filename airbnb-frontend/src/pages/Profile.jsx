@@ -39,22 +39,48 @@ const Profile = () => {
     setMessage('');
 
     try {
+      // DEBUG: Kiểm tra token
       const token = localStorage.getItem('token');
+      console.log('🔐 Token từ localStorage:', token);
+      
+      if (!token) {
+        setMessage('❌ Không tìm thấy token. Vui lòng đăng nhập lại.');
+        setLoading(false);
+        return;
+      }
+
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       };
 
-      const response = await axios.put('/api/users/profile', formData, config);
+      console.log('📤 Gửi request với dữ liệu:', formData);
+      console.log('📤 Gửi request với config:', config);
+
+      const response = await axios.put(
+        'http://localhost:5000/api/users/profile', 
+        formData, 
+        config
+      );
+      
+      console.log('✅ Response từ server:', response.data);
       
       // Cập nhật thông tin user trong context
       updateUser(response.data.user);
       
-      setMessage('Cập nhật thông tin thành công!');
+      setMessage('✅ Cập nhật thông tin thành công!');
     } catch (error) {
-      setMessage('Có lỗi xảy ra khi cập nhật thông tin.');
-      console.error(error);
+      console.error('❌ Lỗi chi tiết:', error);
+      console.error('❌ Response data:', error.response?.data);
+      console.error('❌ Response status:', error.response?.status);
+      console.error('❌ Response headers:', error.response?.headers);
+      
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data?.error || 
+                          'Có lỗi xảy ra khi cập nhật thông tin.';
+      setMessage(`❌ ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -63,8 +89,6 @@ const Profile = () => {
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Trong thực tế, bạn sẽ upload file lên cloud storage
-      // Ở đây tôi giả lập việc tạo URL cho ảnh
       const imageUrl = URL.createObjectURL(file);
       setFormData({
         ...formData,
@@ -77,16 +101,24 @@ const Profile = () => {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          {/* Header */}
+          {/* Header - SỬA LỖI CSS */}
           <div className="bg-linear-to-r from-rose-500 to-pink-600 px-6 py-8">
             <h1 className="text-3xl font-bold text-white">Hồ sơ cá nhân</h1>
             <p className="text-rose-100 mt-2">Quản lý thông tin cá nhân của bạn</p>
           </div>
 
           <div className="p-6">
+            {/* Hiển thị thông tin user hiện tại để debug */}
+            <div className="mb-4 p-4 bg-blue-50 rounded-lg">
+              <h3 className="font-semibold">Thông tin user hiện tại (từ AuthContext):</h3>
+              <p>Name: {user?.name}</p>
+              <p>Email: {user?.email}</p>
+              <p>Token tồn tại: {localStorage.getItem('token') ? '✅' : '❌'}</p>
+            </div>
+
             {message && (
               <div className={`mb-6 p-4 rounded-lg ${
-                message.includes('thành công') 
+                message.includes('✅') 
                   ? 'bg-green-50 text-green-800 border border-green-200' 
                   : 'bg-red-50 text-red-800 border border-red-200'
               }`}>
